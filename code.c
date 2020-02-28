@@ -56,3 +56,8 @@ transpose_parallel_per_row(float in[], float out[])
     for(int j=0; j < N; j++)
         out[j + i*N] = in[i + j*N]; // out(j,i) = in(i,j)
 }
+
+int main(int argc, char **argv)
+{
+
+}
