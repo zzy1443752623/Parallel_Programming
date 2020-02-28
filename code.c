@@ -4,4 +4,4 @@
 
 
 const int N=1024;  
-const int K=1;
+const int K=16;
