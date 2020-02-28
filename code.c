@@ -46,3 +46,13 @@ transpose_serial(float in[], float out[])
         for(int i=0; i < N; i++)
             out[j + i*N] = in[i + j*N]; // out(j,i) = in(i,j)
 }
+
+__global__ void
+transpose_parallel_per_row(float in[], float out[])
+{
+    int i = threadIdx.x;
+
+
+    for(int j=0; j < N; j++)
+        out[j + i*N] = in[i + j*N]; // out(j,i) = in(i,j)
+}
