@@ -30,3 +30,11 @@ transpose_parallel_per_element_tiled(float in[], float out[])
     // read from shared mem, coalesced write to global mem:
     out[(out_corner_i + x) + (out_corner_j + y)*N] = tile[x][y];
 }
+
+void
+transpose_CPU(float in[], float out[])
+{
+    for(int j=0; j < N; j++)
+        for(int i=0; i < N; i++)
+              out[j + i*N] = in[i + j*N]; // out(j,i) = in(i,j)
+}
