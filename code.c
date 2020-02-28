@@ -59,5 +59,43 @@ transpose_parallel_per_row(float in[], float out[])
 
 int main(int argc, char **argv)
 {
+    int numbytes = N * N * sizeof(float);
+
+
+    float *in = (float *) malloc(numbytes);
+    float *out = (float *) malloc(numbytes);
+    float *gold = (float *) malloc(numbytes);
+
+
+    fill_matrix(in, N);
+    transpose_CPU(in, gold);
+
+
+    float *d_in, *d_out;
+
+
+    cudaMalloc(&d_in, numbytes);
+    cudaMalloc(&d_out, numbytes);
+    cudaMemcpy(d_in, in, numbytes, cudaMemcpyHostToDevice);
+
+
+    GpuTimer timer;
+	
+    dim3 blocks(64,64);    //TODO, you need to set the proper blocks per grid
+    dim3 threads(16,16);    //TODO, you need to set the proper threads per block
+
+
+    timer.Start();
+    transpose_parallel_per_element_tiled<<<blocks,threads>>>(d_in, d_out);
+    timer.Stop();
+    cudaMemcpy(out, d_out, numbytes, cudaMemcpyDeviceToHost);
+    printf("transpose_parallel_per_element_tiled %dx%d: %g ms.\nVerifying ...%s\n",
+           K, K, timer.Elapsed(), compare_matrices(out, gold, N) ? "Failed" : "Success");
+
+
+    cudaFree(d_in);
+    cudaFree(d_out);
+
+	
 
 }
