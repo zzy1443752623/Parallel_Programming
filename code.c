@@ -13,7 +13,7 @@ const int K=16;
 __global__ void
 transpose_parallel_per_element_tiled(float in[], float out[])
 {
-    
+    // (i,j) locations of the tile corners for input & output matrices:
     int in_corner_i  = blockIdx.x * K, in_corner_j  = blockIdx.y * K;
     int out_corner_i = blockIdx.y * K, out_corner_j = blockIdx.x * K;
 
@@ -24,9 +24,9 @@ transpose_parallel_per_element_tiled(float in[], float out[])
     __shared__ float tile[K][K];
 
 
-    
+    // coalesced read from global mem, TRANSPOSED write into shared mem:
     tile[y][x] = in[(in_corner_i + x) + (in_corner_j + y)*N];
     __syncthreads();
-    
+    // read from shared mem, coalesced write to global mem:
     out[(out_corner_i + x) + (out_corner_j + y)*N] = tile[x][y];
 }
