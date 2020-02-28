@@ -81,6 +81,18 @@ int main(int argc, char **argv)
 
     GpuTimer timer;
 	
+	
+	
+	
+/*  
+* Now time each kernel and verify that it produces the correct result.
+*
+* To be really careful about benchmarking purposes, we should run every kernel once
+* to "warm" the system and avoid any compilation or code-caching effects, then run
+* every kernel 10 or 100 times and average the timings to smooth out any variance.
+* But this makes for messy code and our goal is teaching, not detailed benchmarking.
+*/
+	
     dim3 blocks(64,64);    //TODO, you need to set the proper blocks per grid
     dim3 threads(16,16);    //TODO, you need to set the proper threads per block
 
