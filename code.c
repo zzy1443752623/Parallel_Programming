@@ -38,3 +38,11 @@ transpose_CPU(float in[], float out[])
         for(int i=0; i < N; i++)
               out[j + i*N] = in[i + j*N]; // out(j,i) = in(i,j)
 }
+
+__global__ void
+transpose_serial(float in[], float out[])
+{
+    for(int j=0; j < N; j++)
+        for(int i=0; i < N; i++)
+            out[j + i*N] = in[i + j*N]; // out(j,i) = in(i,j)
+}
